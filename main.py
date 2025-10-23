@@ -306,14 +306,14 @@ for data in solar2:
 for data in solar3:
     cleaned3.append(data)
 
-#transformed1,initial1,param1 = part1.bc1(cleaned1)  # boxcox of eccentricities
-#output.output1(transformed1,initial1)
+transformed1,initial1,param1 = part1.bc1(cleaned1)  # boxcox of eccentricities
+output.output1(transformed1,initial1)
 
-#transformed2,initial2,param2 = part1.bc2(cleaned3)  # boxcox of orbital distance
-#output.output2(transformed2)
+transformed2,initial2,param2 = part1.bc2(cleaned3)  # boxcox of orbital distance
+output.output2(transformed2)
 
-#transformed3 = part1.mass1(cleaned2)
-#output.output3(transformed3)
+transformed3 = part1.mass1(cleaned2)
+output.output3(transformed3)
 
 output.output4(cleaned2,solar2)
 # units of cleaned1 (name, distance from star in AU , eccentricity)
