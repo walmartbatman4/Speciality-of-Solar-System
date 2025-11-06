@@ -215,18 +215,18 @@ class part1:
  
 class output:
     @staticmethod
-    def output1(transformed_array,original_array):
+    def output1(transformed_array,original_array,solar_system,lamda):
         plt.figure(figsize=(10, 5))
 
         plt.subplot(1, 2, 1)
         plt.hist(original_array, bins=15, color='skyblue', edgecolor='black')
-        plt.title("Original Eccentricities")
+        plt.title(f"Original Eccentricities\n n = {len(transformed_array)}")
         plt.xlabel("Eccentricity")
         plt.ylabel("Frequency")
 
         plt.subplot(1, 2, 2)
         plt.hist(transformed_array, bins=15, color='lightgreen', edgecolor='black')
-        plt.title("Box–Cox Transformed Eccentricities")
+        plt.title(f"Box–Cox Transformed Eccentricities\n n = {len(transformed_array)}")
         plt.xlabel("Transformed Value")
         plt.ylabel("Frequency")
 
@@ -237,7 +237,7 @@ class output:
         plt.figure(figsize=(5, 5))
 
         plt.hist(transformed_array, bins=15, color='blue', edgecolor='black')
-        plt.title("Box–Cox Transformed OrbitalDistance")
+        plt.title(f"Box–Cox Transformed OrbitalDistance\n n = {len(transformed_array)}")
         plt.xlabel("Transformed Value")
         plt.ylabel("Frequency")
 
@@ -256,7 +256,7 @@ class output:
         x_vals = np.linspace(min(log_array), max(log_array), 200)
         plt.plot(x_vals, kde(x_vals), color='red', linewidth=2, label='KDE')
 
-        plt.title("Mass distribution of exoplanets (PDF)")
+        plt.title(f"Mass distribution of exoplanets (PDF)\n n = {len(log_array)}")
         plt.xlabel("log(m)")
         plt.ylabel("Probability Density")
         plt.legend()
@@ -282,7 +282,7 @@ class output:
         # Labels and title
         plt.xlabel("Mass (Earth Masses, log scale)")
         plt.ylabel("Density (kg/m³, log scale)")
-        plt.title("Mass vs Density of Planets (Log–Log Axes)")
+        plt.title(f"Mass vs Density of Planets (Log–Log Axes)\n n = {len(planet_data)}")
 
         plt.grid(True, which="both", ls="--", alpha=0.6)
         plt.tight_layout()
@@ -307,7 +307,7 @@ for data in solar3:
     cleaned3.append(data)
 
 transformed1,initial1,param1 = part1.bc1(cleaned1)  # boxcox of eccentricities
-output.output1(transformed1,initial1)
+output.output1(transformed1,initial1,solar1,param1)
 
 transformed2,initial2,param2 = part1.bc2(cleaned3)  # boxcox of orbital distance
 output.output2(transformed2)
@@ -316,6 +316,21 @@ transformed3 = part1.mass1(cleaned2)
 output.output3(transformed3)
 
 output.output4(cleaned2,solar2)
+
+arr1 = np.array([row[2] for row in solar1])
+t1 = ((arr1 ** param1) - 1) / param1 if param1 != 0 else np.log(arr1)
+for i, val in enumerate(t1):
+    solar1[i].append(val)
+
+arr2 = np.array([row[1] for row in solar3])
+t2 = ((arr2 ** param2) - 1) / param2 if param2 != 0 else np.log(arr2)
+for i, val in enumerate(t2):
+    solar3[i].append(val)
+
+print(solar1)
+print(solar3)
+print(transformed3)
+print(solar2)
 # units of cleaned1 (name, distance from star in AU , eccentricity)
 # units of cleaned2 (name, mass relative to earth, density in standard units)
 # units of cleaned3 (name, distance from star in AU)
